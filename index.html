@@ -246,8 +246,8 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
   <div class="nav-item" onclick="nav('sales')"><span class="icon">📈</span><span>Sales Log</span></div>
   <div class="nav-item" onclick="nav('products')"><span class="icon">🛒</span><span>Products</span></div>
   <div class="nav-item" onclick="nav('inventory')"><span class="icon">📦</span><span>Stock</span></div>
-  <div class="nav-item" onclick="nav('purchases')"><span class="icon">🛍️</span><span>Purchases</span></div>
-  <div class="nav-item" onclick="nav('cash')"><span class="icon">💵</span><span>Cash</span></div>
+  <div class="nav-item owner-only" onclick="nav('purchases')"><span class="icon">🛍️</span><span>Purchases</span></div>
+  <div class="nav-item owner-only" onclick="nav('cash')"><span class="icon">💵</span><span>Cash</span></div>
   <div class="nav-item" onclick="nav('loyalty')"><span class="icon">⭐</span><span>Loyalty</span></div>
   <div class="nav-item owner-only" onclick="nav('payouts')"><span class="icon">💸</span><span>Payouts</span></div>
   <div class="nav-item owner-only" onclick="nav('import')"><span class="icon">⬆️</span><span>Import</span></div>
@@ -266,8 +266,8 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
 <div class="bottom-nav">
   <div class="bnav-item active" onclick="nav('dashboard')"><span class="icon">◈</span>Home</div>
   <div class="bnav-item" onclick="nav('sales')"><span class="icon">📈</span>Sales</div>
-  <div class="bnav-item" onclick="nav('purchases')"><span class="icon">🛍️</span>Purchases</div>
-  <div class="bnav-item" onclick="nav('cash')"><span class="icon">💵</span>Cash</div>
+  <div class="bnav-item owner-only" onclick="nav('purchases')"><span class="icon">🛍️</span>Purchases</div>
+  <div class="bnav-item owner-only" onclick="nav('cash')"><span class="icon">💵</span>Cash</div>
   <div class="bnav-item" onclick="nav('loyalty')"><span class="icon">⭐</span>Loyalty</div>
 </div>
 <div id="install-banner" onclick="installApp()">📲 Tap to install Brew Tracker on your home screen</div>
@@ -280,7 +280,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
   <div class="stat-grid">
     <div class="stat-card accent owner-only"><div class="label">Today's Revenue</div><div class="value mono" id="d-revenue">R 0</div><div class="sub" id="d-txn">0 transactions</div></div>
     <div class="stat-card owner-only"><div class="label">This Week</div><div class="value mono" id="d-week">R 0</div><div class="sub">7-day total</div></div>
-    <div class="stat-card owner-only"><div class="label">Avg Sale</div><div class="value mono" id="d-avg">R 0</div><div class="sub">per transaction</div></div>
+    <div class="stat-card owner-only"><div class="label">Card / Cash Today</div><div style="display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 2px;"><span style="font-size:11px;color:rgba(255,255,255,.75);">💳 Card</span><span class="mono" style="font-size:20px;" id="d-card">R 0</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:11px;color:rgba(255,255,255,.75);">💵 Cash</span><span class="mono" style="font-size:20px;" id="d-cash">R 0</span></div></div>
     <div class="stat-card green"><div class="label">Tips Today</div><div class="value mono" id="d-tips">R 0</div><div class="sub">collected today</div></div>
     <div class="stat-card"><div class="label">Today's Sales</div><div class="value mono" id="d-txn2">0</div><div class="sub">transactions</div></div>
     <div class="stat-card"><div class="label">Low Stock</div><div class="value mono" id="d-low">0</div><div class="sub">items to reorder</div></div>
@@ -327,10 +327,21 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
       </div>
       <div class="form-row">
         <div class="field"><label>Discount (R) <span style="font-weight:400;font-size:10px;color:var(--text-muted);">optional</span></label><input type="number" id="s-discount" placeholder="0.00" min="0" step="0.01" oninput="updatePreview()"/></div>
-        <div class="field"><label>Tips (R) <span style="font-weight:400;font-size:10px;color:var(--text-muted);">optional</span></label><input type="number" id="s-tips" placeholder="0.00" min="0" step="0.01"/></div>
+        <div class="field" style="flex-direction:row;align-items:center;gap:10px;padding:8px 0;"><input type="checkbox" id="s-yoco-tip" style="width:18px;height:18px;accent-color:var(--caramel);cursor:pointer;flex-shrink:0;"/><label for="s-yoco-tip" style="font-size:13.5px;font-weight:500;color:var(--text);cursor:pointer;text-transform:none;letter-spacing:0;">💳 Customer tipped on Yoco</label></div>
       </div>
       <div id="sale-preview" style="display:none;background:rgba(200,134,26,.08);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--text-muted);"></div>
-      <div class="flex-end mt-16"><button class="btn btn-primary" onclick="addSale()">➕ Log Sale</button></div>
+      <div id="sale-cart" style="display:none;background:rgba(200,134,26,.07);border:1.5px solid rgba(200,134,26,.2);border-radius:10px;padding:12px 14px;margin-bottom:12px;">
+        <div style="font-size:12px;font-weight:700;color:var(--espresso);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">🛒 Order Items</div>
+        <div id="cart-items"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(200,134,26,.2);margin-top:6px;">
+          <span class="mono" style="font-size:15px;font-weight:700;color:var(--espresso);" id="cart-total">R 0.00</span>
+          <button onclick="clearCart()" style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--rust);">✕ Clear</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
+        <button class="btn btn-ghost" onclick="addToCart()">+ Add Item</button>
+        <button class="btn btn-primary" onclick="submitOrder()">💾 Log Order</button>
+      </div>
     </div>
     <div class="panel">
       <div class="panel-header"><div class="panel-title">Today's Summary</div></div>
@@ -975,7 +986,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
 // ═══════════ STATE ═══════════
 let db=null,unsubscribers=[],currentUser=null,currentPage='dashboard';
 let state={sales:[],inventory:[],customers:[],promos:[],products:[],purchases:[],expenses:[],payouts:[]};
-let currentRecipe=[],selectedMember=null;
+let currentRecipe=[],selectedMember=null,saleCart=[];
 
 // ═══════════ AUTH ═══════════
 async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
@@ -1260,10 +1271,10 @@ async function addSale(){
   const qty=parseInt(document.getElementById('s-qty').value)||1;
   const pay=document.getElementById('s-pay').value;
   const discount=parseFloat(document.getElementById('s-discount').value)||0;
-  const tips=parseFloat(document.getElementById('s-tips').value)||0;
+  const yocoTip=document.getElementById('s-yoco-tip')?.checked||false;
   if(!item||isNaN(amount)||amount<=0){toast('⚠️ Fill in item and amount');return;}
   const finalAmount=Math.max(0,amount-(discount/qty));
-  await dbAdd('sales',{date,item,cat,amount:finalAmount,qty,pay,discount,tips,loyaltyMemberId:selectedMember?.id||null,loyaltyMemberName:selectedMember?.name||null});
+  await dbAdd('sales',{date,item,cat,amount:finalAmount,qty,pay,discount,yocoTip,loyaltyMemberId:selectedMember?.id||null,loyaltyMemberName:selectedMember?.name||null});
   // Auto-stamp
   if(selectedMember){
     const c=selectedMember;
@@ -1284,11 +1295,95 @@ async function addSale(){
   document.getElementById('s-item').value='';
   document.getElementById('s-amount').value='';
   document.getElementById('s-discount').value='';
-  document.getElementById('s-tips').value='';
+  document.getElementById('s-yoco-tip').checked=false;
   document.getElementById('s-qty').value='1';
   document.getElementById('sale-preview').style.display='none';
   clearMember();
   if(!selectedMember)toast('✅ Sale logged!');
+}
+
+// ═══════════ CART (MULTI-ITEM ORDERS) ═══════════
+function addToCart(){
+  const item=document.getElementById('s-item').value.trim();
+  const cat=document.getElementById('s-cat').value;
+  const amount=parseFloat(document.getElementById('s-amount').value);
+  const qty=parseInt(document.getElementById('s-qty').value)||1;
+  const discount=parseFloat(document.getElementById('s-discount').value)||0;
+  if(!item||isNaN(amount)||amount<=0){toast('⚠️ Fill in item and amount');return;}
+  const finalAmount=Math.max(0,amount-(discount/qty));
+  saleCart.push({item,cat,amount:finalAmount,qty,discount});
+  document.getElementById('s-item').value='';
+  document.getElementById('s-amount').value='';
+  document.getElementById('s-discount').value='';
+  document.getElementById('s-qty').value='1';
+  document.getElementById('sale-preview').style.display='none';
+  renderCart();
+  toast('✅ Added to order');
+}
+
+function renderCart(){
+  const cartEl=document.getElementById('sale-cart');
+  const itemsEl=document.getElementById('cart-items');
+  const totalEl=document.getElementById('cart-total');
+  if(!saleCart.length){cartEl.style.display='none';return;}
+  cartEl.style.display='';
+  itemsEl.innerHTML=saleCart.map((it,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(200,134,26,.12);">
+    <span style="font-size:13px;"><strong>${it.item}</strong> ×${it.qty}</span>
+    <span style="display:flex;align-items:center;gap:8px;">
+      <span class="mono" style="font-size:13px;">R ${(it.amount*it.qty).toFixed(2)}</span>
+      <button onclick="removeCartItem(${i})" style="background:none;border:none;cursor:pointer;color:var(--rust);font-size:15px;line-height:1;padding:0;">✕</button>
+    </span>
+  </div>`).join('');
+  const total=saleCart.reduce((a,it)=>a+it.amount*it.qty,0);
+  totalEl.textContent='R '+total.toFixed(2);
+}
+
+function removeCartItem(i){saleCart.splice(i,1);renderCart();}
+function clearCart(){saleCart=[];renderCart();}
+
+async function submitOrder(){
+  if(!db){toast('⚠️ Not connected');return;}
+  // Pull any item currently in the form into the cart first
+  const itemVal=document.getElementById('s-item').value.trim();
+  const amountVal=parseFloat(document.getElementById('s-amount').value);
+  if(itemVal&&!isNaN(amountVal)&&amountVal>0){
+    const cat=document.getElementById('s-cat').value;
+    const qty=parseInt(document.getElementById('s-qty').value)||1;
+    const discount=parseFloat(document.getElementById('s-discount').value)||0;
+    saleCart.push({item:itemVal,cat,amount:Math.max(0,amountVal-(discount/qty)),qty,discount});
+    document.getElementById('s-item').value='';
+    document.getElementById('s-amount').value='';
+    document.getElementById('s-discount').value='';
+    document.getElementById('s-qty').value='1';
+    document.getElementById('sale-preview').style.display='none';
+  }
+  if(!saleCart.length){toast('⚠️ No items to log');return;}
+  const date=document.getElementById('s-date').value||today();
+  const pay=document.getElementById('s-pay').value;
+  const yocoTip=document.getElementById('s-yoco-tip').checked;
+  const totalItems=saleCart.length;
+  const snap=[...saleCart];
+  for(const it of snap){
+    await dbAdd('sales',{date,item:it.item,cat:it.cat,amount:it.amount,qty:it.qty,pay,discount:it.discount||0,yocoTip,loyaltyMemberId:selectedMember?.id||null,loyaltyMemberName:selectedMember?.name||null});
+    await deductIngredients(it.item,it.qty);
+  }
+  if(selectedMember){
+    const c=selectedMember;
+    const newStamps=(c.stamps||0)+totalItems;
+    const log=[...(c.stampLog||[]),...Array(totalItems).fill(today())];
+    await dbUpd('customers',c.id,{stamps:newStamps,stampLog:log});
+    if(Math.floor((c.stamps||0)/10)<Math.floor(newStamps/10))toast('🎉 '+c.name+' earned a FREE coffee!');
+    else toast('☕ '+totalItems+' stamp'+(totalItems>1?'s':'')+' added for '+c.name+'!');
+  }
+  if(selectedMember?.memberType==='account'){
+    const totalAdd=snap.reduce((a,it)=>a+it.amount*it.qty,0);
+    await dbUpd('customers',selectedMember.id,{accountBalance:(selectedMember.accountBalance||0)+totalAdd});
+  }
+  saleCart=[];
+  renderCart();
+  document.getElementById('s-yoco-tip').checked=false;
+  clearMember();
+  if(!selectedMember)toast('✅ '+(totalItems>1?totalItems+' items logged!':'Sale logged!'));
 }
 
 // ═══════════ FUZZY PRODUCT MATCHING ═══════════
@@ -1381,7 +1476,7 @@ function renderSalesLog(){
     +'<td class="mono">'+s.qty+'</td>'
     +(isOwner?'<td class="mono"><strong>R '+((s.amount||0)*(s.qty||1)).toFixed(2)+'</strong></td>':'')
     +'<td class="mono">'+(s.discount>0?'R '+s.discount.toFixed(2):'—')+'</td>'
-    +'<td class="mono" style="color:var(--sage);">'+(s.tips>0?'R '+s.tips.toFixed(2):'—')+'</td>'
+    +'<td class="mono" style="color:var(--sage);">'+(s.yocoTip?'✓ Yoco':(s.tips>0?'R '+s.tips.toFixed(2):'—'))+'</td>'
     +'<td>'+s.pay+'</td>'
     +'<td style="font-size:12px;">'+(s.loyaltyMemberName?'⭐ '+s.loyaltyMemberName:'—')+'</td>'
     +'<td>'+(isOwner?'<button class="btn btn-danger" onclick="deleteSale(\''+s.id+'\')">✕</button>':'')+'</td>'
@@ -1392,13 +1487,13 @@ function renderSalesSummary(){
   const tod=today();
   const ts=state.sales.filter(s=>s.date===tod);
   const rev=ts.reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0);
-  const tips=ts.reduce((a,s)=>a+(s.tips||0),0);
+  const tipsCount=ts.filter(s=>s.yocoTip||(s.tips>0)).length;
   const disc=ts.reduce((a,s)=>a+(s.discount||0),0);
   const txn=ts.length;
   document.getElementById('s-today-rev').textContent='R '+rev.toFixed(2);
   document.getElementById('s-today-txn').textContent=txn;
   document.getElementById('s-today-avg').textContent='R '+(txn?(rev/txn).toFixed(2):'0.00');
-  document.getElementById('s-today-tips').textContent='R '+tips.toFixed(2);
+  document.getElementById('s-today-tips').textContent=tipsCount+(tipsCount===1?' tip':' tips');
   document.getElementById('s-today-disc').textContent='R '+disc.toFixed(2);
   const cats={};ts.forEach(s=>cats[s.cat]=(cats[s.cat]||0)+1);
   const top=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0];
@@ -1654,7 +1749,7 @@ function renderDashboard(){
   document.getElementById('dash-greeting').textContent=(hr<12?'Good morning':hr<17?'Good afternoon':'Good evening')+' ☕';
   const ts=state.sales.filter(s=>s.date===tod);
   const todayRev=ts.reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0);
-  const todayTips=ts.reduce((a,s)=>a+(s.tips||0),0);
+  const todayTips=ts.filter(s=>s.yocoTip||(s.tips>0)).length;
   const weekDates=thisWeekDates();
   const weekRev=state.sales.filter(s=>weekDates.includes(s.date)).reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0);
   const txn=ts.length;
@@ -1662,8 +1757,11 @@ function renderDashboard(){
   document.getElementById('d-revenue').textContent='R '+todayRev.toFixed(2);
   document.getElementById('d-txn').textContent=txn+' transaction'+(txn!==1?'s':'');
   document.getElementById('d-week').textContent='R '+weekRev.toFixed(2);
-  document.getElementById('d-avg').textContent='R '+(txn?(todayRev/txn).toFixed(2):'0.00');
-  document.getElementById('d-tips').textContent='R '+todayTips.toFixed(2);
+  const todayCard=ts.filter(s=>s.pay!=='Cash').reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0);
+  const todayCash=ts.filter(s=>s.pay==='Cash').reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0);
+  document.getElementById('d-card').textContent='R '+todayCard.toFixed(2);
+  document.getElementById('d-cash').textContent='R '+todayCash.toFixed(2);
+  document.getElementById('d-tips').textContent=todayTips+(todayTips===1?' tip':' tips');
   document.getElementById('d-txn2').textContent=txn;
   document.getElementById('d-low').textContent=state.inventory.filter(i=>stockStatus(i)[0]!=='ok').length;
   document.getElementById('d-loyalty').textContent=state.customers.filter(c=>!c.memberType||c.memberType==='regular').length;
