@@ -1,5 +1,5 @@
-const CACHE = 'brew-tracker-v1';
-const ASSETS = ['/', '/index.html'];
+const CACHE = 'brew-tracker-v2';
+const ASSETS = ['./index.html'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
