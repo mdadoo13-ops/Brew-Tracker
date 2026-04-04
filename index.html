@@ -10,7 +10,27 @@
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icon-192.png"/>
 <title>Brew Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-Thin.otf') format('opentype');font-weight:100;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-ThinItalic.otf') format('opentype');font-weight:100;font-style:italic;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-ExtraLight.otf') format('opentype');font-weight:200;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-ExtraLightItalic.otf') format('opentype');font-weight:200;font-style:italic;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-Light.otf') format('opentype');font-weight:300;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-LightItalic.otf') format('opentype');font-weight:300;font-style:italic;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-Regular.otf') format('opentype');font-weight:400;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-RegularItalic.otf') format('opentype');font-weight:400;font-style:italic;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-Medium.otf') format('opentype');font-weight:500;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-MediumItalic.otf') format('opentype');font-weight:500;font-style:italic;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-SemiBold.otf') format('opentype');font-weight:600;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-SemiBoldItalic.otf') format('opentype');font-weight:600;font-style:italic;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-Bold.otf') format('opentype');font-weight:700;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-BoldItalic.otf') format('opentype');font-weight:700;font-style:italic;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-ExtraBold.otf') format('opentype');font-weight:800;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-ExtraBoldItalic.otf') format('opentype');font-weight:800;font-style:italic;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-Black.otf') format('opentype');font-weight:900;font-style:normal;}
+@font-face{font-family:'Metropolis';src:url('fonts/Metropolis-BlackItalic.otf') format('opentype');font-weight:900;font-style:italic;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -25,7 +45,7 @@
   --safe-top:env(safe-area-inset-top);--safe-bot:env(safe-area-inset-bottom);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Jost',sans-serif;background:var(--parchment);color:var(--text);min-height:100vh;font-weight:400;letter-spacing:0.01em;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),linear-gradient(160deg,rgba(196,164,124,0.08) 0%,transparent 60%),linear-gradient(320deg,rgba(155,98,56,0.06) 0%,transparent 60%);}
+body{font-family:'Metropolis',sans-serif;background:var(--parchment);color:var(--text);min-height:100vh;font-weight:400;letter-spacing:0.01em;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),linear-gradient(160deg,rgba(196,164,124,0.08) 0%,transparent 60%),linear-gradient(320deg,rgba(155,98,56,0.06) 0%,transparent 60%);}
 #setup-overlay,#login-overlay{position:fixed;inset:0;background:var(--walnut);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;}
 #setup-overlay.hidden,#login-overlay.hidden{display:none;}
 .setup-box{background:var(--paper);border:1px solid var(--border);border-radius:2px;padding:40px;max-width:480px;width:100%;}
@@ -87,10 +107,10 @@ body{font-family:'Jost',sans-serif;background:var(--parchment);color:var(--text)
 .form-row.three{grid-template-columns:1fr 1fr 1fr;}.form-row.one{grid-template-columns:1fr;}
 .field{display:flex;flex-direction:column;gap:6px;}
 .field label{font-size:10px;font-weight:600;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;}
-.field input,.field select,.field textarea{background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:10px 13px;font-family:'Jost',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;font-weight:400;}
+.field input,.field select,.field textarea{background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:10px 13px;font-family:'Metropolis',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;font-weight:400;}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--clay);box-shadow:0 0 0 3px rgba(155,98,56,.08);}
 .field textarea{resize:vertical;min-height:70px;}
-.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:2px;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;transition:all .18s;letter-spacing:0.04em;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:2px;border:none;cursor:pointer;font-family:'Metropolis',sans-serif;font-size:13px;font-weight:500;transition:all .18s;letter-spacing:0.04em;}
 .btn-primary{background:var(--clay);color:var(--cream);}.btn-primary:hover{background:var(--clay-light);transform:translateY(-1px);box-shadow:0 4px 16px rgba(155,98,56,.28);}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);}.btn-ghost:hover{border-color:var(--clay);color:var(--clay);}
 .btn-danger{background:var(--rust);color:var(--cream);font-size:12px;padding:6px 12px;}.btn-danger:hover{background:var(--rust-light);}
@@ -111,7 +131,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
 .role-badge{display:inline-block;padding:2px 9px;border-radius:2px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
 .role-owner{background:rgba(155,98,56,.15);color:var(--clay);}.role-staff{background:rgba(92,112,80,.12);color:var(--sage);}
 .loyalty-search-wrap{position:relative;margin-bottom:4px;}
-.loyalty-search-wrap input{width:100%;padding:10px 13px;background:var(--cream);border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:14px;color:var(--text);outline:none;}
+.loyalty-search-wrap input{width:100%;padding:10px 13px;background:var(--cream);border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:14px;color:var(--text);outline:none;}
 .loyalty-search-wrap input:focus{border-color:var(--clay);box-shadow:0 0 0 3px rgba(155,98,56,.08);}
 .loyalty-dd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--paper);border:1px solid var(--border);border-radius:2px;box-shadow:var(--shadow-lg);z-index:60;max-height:220px;overflow-y:auto;}
 .loyalty-opt{padding:11px 14px;cursor:pointer;font-size:13.5px;border-bottom:1px solid var(--border);transition:background .15s;}
@@ -158,7 +178,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
 .col-map-table{width:100%;border-collapse:collapse;}
 .col-map-table th{font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);font-weight:600;text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);}
 .col-map-table td{padding:8px 12px;font-size:13px;border-bottom:1px solid rgba(100,58,20,.06);vertical-align:middle;}
-.col-map-table select{padding:6px 10px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);color:var(--text);outline:none;}
+.col-map-table select{padding:6px 10px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);color:var(--text);outline:none;}
 .preview-table-wrap{max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:2px;}
 .preview-table{width:100%;border-collapse:collapse;font-size:12.5px;}
 .preview-table th{background:var(--walnut);color:var(--parchment);padding:9px 12px;text-align:left;font-size:10px;position:sticky;top:0;letter-spacing:0.08em;text-transform:uppercase;}
@@ -465,7 +485,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
     <div class="panel-header">
       <div class="panel-title">Sales Log</div>
       <div style="display:flex;gap:8px;align-items:center;">
-        <input type="date" id="s-filter-date" onchange="renderSalesLog()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);"/>
+        <input type="date" id="s-filter-date" onchange="renderSalesLog()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);"/>
         <button class="btn btn-ghost btn-sm" onclick="document.getElementById('s-filter-date').value='';renderSalesLog()">Clear</button>
       </div>
     </div>
@@ -494,8 +514,8 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
       <div style="margin-top:4px;">
         <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:10px;">Recipe / Ingredients</div>
         <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-end;">
-          <div style="flex:2;"><select id="recipe-sel" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);color:var(--text);outline:none;"><option value="">— Choose stock item —</option></select></div>
-          <div style="flex:1;"><input type="number" id="recipe-qty" placeholder="Qty" min="0" step="0.01" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);color:var(--text);outline:none;"/></div>
+          <div style="flex:2;"><select id="recipe-sel" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);color:var(--text);outline:none;"><option value="">— Choose stock item —</option></select></div>
+          <div style="flex:1;"><input type="number" id="recipe-qty" placeholder="Qty" min="0" step="0.01" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);color:var(--text);outline:none;"/></div>
           <button class="btn btn-ghost btn-sm" onclick="addRecipeItem()">+ Add</button>
         </div>
         <div id="recipe-preview"><p style="font-size:12px;color:var(--text-muted);padding:4px 0;">No ingredients yet.</p></div>
@@ -544,7 +564,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
   </div>
   <div class="panel">
     <div class="panel-header"><div class="panel-title">Stock List</div>
-      <select id="i-filter" onchange="renderInventory()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);">
+      <select id="i-filter" onchange="renderInventory()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);">
         <option value="">All categories</option><option>Coffee Beans</option><option>Milk &amp; Dairy</option><option>Syrups</option><option>Cups &amp; Packaging</option><option>Food Supplies</option><option>Cleaning</option><option>Other</option>
       </select>
     </div>
@@ -575,7 +595,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
       </div>
       <div class="panel">
         <div class="panel-header"><div class="panel-title">☕ Loyalty Cards</div><span style="font-size:12px;color:var(--text-muted);">10 stamps = free coffee</span></div>
-        <input type="text" id="loyalty-filter" placeholder="Search members…" oninput="renderLoyalty()" style="width:100%;padding:9px 13px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13.5px;background:var(--cream);outline:none;margin-bottom:14px;"/>
+        <input type="text" id="loyalty-filter" placeholder="Search members…" oninput="renderLoyalty()" style="width:100%;padding:9px 13px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13.5px;background:var(--cream);outline:none;margin-bottom:14px;"/>
         <div id="loyalty-list"><div class="empty"><div class="icon">⭐</div>No regular members yet.</div></div>
       </div>
     </div>
@@ -658,7 +678,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
     <div class="panel-header">
       <div class="panel-title">Purchase Log</div>
       <div style="display:flex;gap:8px;align-items:center;">
-        <input type="date" id="pu-filter" onchange="renderPurchases()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);"/>
+        <input type="date" id="pu-filter" onchange="renderPurchases()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);"/>
         <button class="btn btn-ghost btn-sm" onclick="document.getElementById('pu-filter').value='';renderPurchases()">Clear</button>
       </div>
     </div>
@@ -713,7 +733,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
   <div class="panel">
     <div class="panel-header">
       <div class="panel-title">Cash Flow Log</div>
-      <select id="cash-filter-type" onchange="renderCashLog()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);">
+      <select id="cash-filter-type" onchange="renderCashLog()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);">
         <option value="">All</option><option value="in">Cash In only</option><option value="out">Cash Out only</option>
       </select>
     </div>
@@ -780,7 +800,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
       <div class="panel-header">
         <div class="panel-title">Wage History</div>
         <div style="display:flex;gap:8px;">
-          <input type="date" id="po-filter-date" onchange="renderPayouts()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);"/>
+          <input type="date" id="po-filter-date" onchange="renderPayouts()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);"/>
           <button class="btn btn-ghost btn-sm" onclick="document.getElementById('po-filter-date').value='';renderPayouts()">Clear</button>
         </div>
       </div>
@@ -825,7 +845,7 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">Supplier Payment History</div>
-        <input type="date" id="sp-filter-date" onchange="renderSupplierPayments()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:var(--cream);"/>
+        <input type="date" id="sp-filter-date" onchange="renderSupplierPayments()" style="padding:7px 12px;border:1px solid var(--border);border-radius:2px;font-family:'Metropolis',sans-serif;font-size:13px;background:var(--cream);"/>
       </div>
       <div class="table-wrap">
         <table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Method</th><th>Reference</th><th>Amount</th><th></th></tr></thead>
