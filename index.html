@@ -207,6 +207,48 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
 .payout-card .pc-amount{font-family:'DM Mono',monospace;font-size:18px;font-weight:400;color:var(--sage);}
 .text-green{color:var(--sage);}
 /* Analytics badge colours mapped to new palette */
+
+/* ═══ DASHBOARD — AESOP INTERIOR ═══ */
+.d-hero{background:#0D0906;border-radius:2px;padding:52px 48px 44px;margin-bottom:2px;position:relative;overflow:hidden;}
+.d-hero::before{content:'';position:absolute;top:-20%;right:-8%;width:700px;height:700px;background:radial-gradient(ellipse,rgba(184,120,40,.09) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.d-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(184,120,40,.18),transparent);}
+.d-hero>*{position:relative;z-index:1;}
+.d-eyebrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;}
+.d-eyebrow-greeting{font-size:10px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:rgba(196,164,124,.38);}
+.d-eyebrow-date{font-family:'DM Mono',monospace;font-size:10px;color:rgba(196,164,124,.28);letter-spacing:0.08em;}
+.d-rule{border:none;border-top:1px solid rgba(184,120,40,.12);margin:0 0 40px;}
+.d-rev-label{font-size:9px;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:rgba(184,120,40,.45);margin-bottom:12px;}
+.d-rev-value{font-family:'Cormorant Garamond',serif;font-size:96px;font-weight:400;color:#EBE0C6;line-height:.9;letter-spacing:-0.02em;margin-bottom:10px;}
+.d-rev-sub{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(184,120,40,.28);margin-bottom:40px;font-style:italic;}
+.d-secondary{display:flex;padding-top:26px;border-top:1px solid rgba(184,120,40,.08);}
+.d-sec{flex:1;padding-right:28px;margin-right:28px;border-right:1px solid rgba(184,120,40,.07);}
+.d-sec:last-child{border-right:none;padding-right:0;margin-right:0;}
+.d-sec-label{font-size:9px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(196,164,124,.32);margin-bottom:8px;}
+.d-sec-value{font-family:'DM Mono',monospace;font-size:20px;font-weight:400;color:rgba(235,224,198,.78);}
+/* Stat strip */
+.d-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:28px;overflow:hidden;}
+.d-cell{background:var(--paper);padding:20px 22px 18px;transition:background .2s;cursor:default;}
+.d-cell:hover{background:var(--cream);}
+.d-cell-label{font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+.d-cell-value{font-family:'DM Mono',monospace;font-size:22px;font-weight:400;color:var(--text);}
+/* Line chart */
+.d-chart{height:120px;margin:10px 0 8px;}
+.d-chart svg{width:100%;height:100%;overflow:visible;}
+.d-chart-days{display:flex;justify-content:space-between;margin-top:4px;}
+.d-chart-day{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);font-family:'DM Mono',monospace;}
+/* Seller list */
+.d-seller{display:flex;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--border);}
+.d-seller:last-child{border-bottom:none;}
+.d-seller-n{font-family:'DM Mono',monospace;font-size:9.5px;color:var(--text-muted);width:22px;flex-shrink:0;opacity:.6;}
+.d-seller-name{flex:1;font-size:13.5px;color:var(--text);font-weight:400;}
+.d-seller-qty{font-size:11px;font-family:'DM Mono',monospace;color:var(--text-muted);margin-right:18px;}
+.d-seller-rev{font-family:'DM Mono',monospace;font-size:13px;color:var(--sage);}
+@media(max-width:768px){
+  .d-hero{padding:32px 24px 28px;}
+  .d-rev-value{font-size:58px;}
+  .d-sec{padding-right:16px;margin-right:16px;}
+  .d-strip{grid-template-columns:1fr 1fr;}
+}
 </style>
 </head>
 <body>
@@ -286,22 +328,76 @@ tbody td{padding:12px 14px;font-size:13.5px;color:var(--text);}
 
 <!-- DASHBOARD -->
 <div class="page active" id="page-dashboard">
-  <div class="page-header"><h2 id="dash-greeting">Good morning ☕</h2><p>Here's how your shop is doing.</p></div>
-  <div class="stat-grid">
-    <div class="stat-card accent owner-only"><div class="label">Today's Revenue</div><div class="value mono" id="d-revenue">R 0</div><div class="sub" id="d-txn">0 transactions</div></div>
-    <div class="stat-card owner-only"><div class="label">This Week</div><div class="value mono" id="d-week">R 0</div><div class="sub">7-day total</div></div>
-    <div class="stat-card owner-only"><div class="label">Card / Cash Today</div><div style="display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 2px;"><span style="font-size:11px;color:rgba(255,255,255,.75);">💳 Card</span><span class="mono" style="font-size:20px;" id="d-card">R 0</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:11px;color:rgba(255,255,255,.75);">💵 Cash</span><span class="mono" style="font-size:20px;" id="d-cash">R 0</span></div></div>
-    <div class="stat-card green"><div class="label">Tips Today</div><div class="value mono" id="d-tips">R 0</div><div class="sub">collected today</div></div>
-    <div class="stat-card"><div class="label">Today's Sales</div><div class="value mono" id="d-txn2">0</div><div class="sub">transactions</div></div>
-    <div class="stat-card"><div class="label">Low Stock</div><div class="value mono" id="d-low">0</div><div class="sub">items to reorder</div></div>
-    <div class="stat-card"><div class="label">Loyalty Members</div><div class="value mono" id="d-loyalty">0</div><div class="sub">active customers</div></div>
-    <div class="stat-card owner-only"><div class="label">On Account</div><div class="value mono" id="d-account">R 0</div><div class="sub">outstanding balance</div></div>
+
+  <!-- ── HERO — the shopfront ── -->
+  <div class="d-hero">
+    <div class="d-eyebrow">
+      <span class="d-eyebrow-greeting" id="dash-greeting">Good morning</span>
+      <span class="d-eyebrow-date" id="dash-hero-date">—</span>
+    </div>
+    <hr class="d-rule">
+    <div class="owner-only">
+      <div class="d-rev-label">Revenue Today</div>
+      <div class="d-rev-value" id="d-revenue">R 0</div>
+      <div class="d-rev-sub" id="d-txn">—</div>
+    </div>
+    <div class="d-secondary">
+      <div class="d-sec owner-only">
+        <div class="d-sec-label">Card</div>
+        <div class="d-sec-value" id="d-card">R 0</div>
+      </div>
+      <div class="d-sec owner-only">
+        <div class="d-sec-label">Cash</div>
+        <div class="d-sec-value" id="d-cash">R 0</div>
+      </div>
+      <div class="d-sec">
+        <div class="d-sec-label">Tips</div>
+        <div class="d-sec-value" id="d-tips">—</div>
+      </div>
+      <div class="d-sec">
+        <div class="d-sec-label">Sales</div>
+        <div class="d-sec-value" id="d-txn2">0</div>
+      </div>
+    </div>
   </div>
+
+  <!-- ── STAT STRIP ── -->
+  <div class="d-strip owner-only">
+    <div class="d-cell">
+      <div class="d-cell-label">This Week</div>
+      <div class="d-cell-value" id="d-week">R 0</div>
+    </div>
+    <div class="d-cell">
+      <div class="d-cell-label">On Account</div>
+      <div class="d-cell-value" id="d-account">R 0</div>
+    </div>
+    <div class="d-cell">
+      <div class="d-cell-label">Low Stock</div>
+      <div class="d-cell-value" id="d-low">0</div>
+    </div>
+    <div class="d-cell">
+      <div class="d-cell-label">Members</div>
+      <div class="d-cell-value" id="d-loyalty">0</div>
+    </div>
+  </div>
+
+  <!-- ── PANELS ── -->
   <div class="two-col">
-    <div class="panel owner-only"><div class="panel-header"><div class="panel-title">7-Day Revenue</div></div><div class="chart-area"><div class="bar-chart" id="dash-chart"></div></div></div>
-    <div class="panel"><div class="panel-header"><div class="panel-title">Top Sellers</div></div><div id="dash-top-sellers"><div class="empty"><div class="icon">☕</div>Log sales to see top sellers</div></div></div>
+    <div class="panel owner-only">
+      <div class="panel-header"><div class="panel-title">Seven-Day Revenue</div></div>
+      <div class="d-chart"><svg id="dash-chart-svg" viewBox="0 0 420 120" preserveAspectRatio="none"></svg></div>
+      <div class="d-chart-days" id="dash-chart-days"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><div class="panel-title" style="font-style:italic;">Today's Offerings</div></div>
+      <div id="dash-top-sellers"><div class="empty"><div class="icon" style="opacity:.35;">◈</div>No sales yet.</div></div>
+    </div>
   </div>
-  <div class="panel"><div class="panel-header"><div class="panel-title">⚠️ Low Stock Alerts</div></div><div id="dash-alerts"><div class="empty"><div class="icon">✅</div>Everything's stocked up!</div></div></div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">Stock Alerts</div></div>
+    <div id="dash-alerts"><div class="empty"><div class="icon" style="opacity:.35;">✓</div>All items stocked.</div></div>
+  </div>
 </div>
 
 <!-- SALES -->
@@ -1756,7 +1852,10 @@ function renderMarketingStats(){
 function renderDashboard(){
   const tod=today();
   const hr=new Date().getHours();
-  document.getElementById('dash-greeting').textContent=(hr<12?'Good morning':hr<17?'Good afternoon':'Good evening')+' ☕';
+  const greeting=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+  document.getElementById('dash-greeting').textContent=greeting;
+  const heroDate=new Date().toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long'});
+  const hd=document.getElementById('dash-hero-date');if(hd)hd.textContent=heroDate;
   const ts=state.sales.filter(s=>s.date===tod);
   const todayRev=ts.reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0);
   const todayTips=ts.filter(s=>s.yocoTip||(s.tips>0)).length;
@@ -1765,29 +1864,53 @@ function renderDashboard(){
   const txn=ts.length;
   const accountTotal=state.customers.filter(c=>c.memberType==='account').reduce((a,c)=>a+(c.accountBalance||0),0);
   document.getElementById('d-revenue').textContent='R '+todayRev.toFixed(2);
-  document.getElementById('d-txn').textContent=txn+' transaction'+(txn!==1?'s':'');
+  document.getElementById('d-txn').textContent=txn===0?'No sales yet':(txn+' transaction'+(txn!==1?'s':''));
   document.getElementById('d-week').textContent='R '+weekRev.toFixed(2);
   const todayCard=ts.filter(s=>s.pay!=='Cash').reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0);
   const todayCash=ts.filter(s=>s.pay==='Cash').reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0);
   document.getElementById('d-card').textContent='R '+todayCard.toFixed(2);
   document.getElementById('d-cash').textContent='R '+todayCash.toFixed(2);
-  document.getElementById('d-tips').textContent=todayTips+(todayTips===1?' tip':' tips');
+  document.getElementById('d-tips').textContent=todayTips===0?'—':(todayTips+(todayTips===1?' tip':' tips'));
   document.getElementById('d-txn2').textContent=txn;
   document.getElementById('d-low').textContent=state.inventory.filter(i=>stockStatus(i)[0]!=='ok').length;
   document.getElementById('d-loyalty').textContent=state.customers.filter(c=>!c.memberType||c.memberType==='regular').length;
   document.getElementById('d-account').textContent='R '+accountTotal.toFixed(2);
+  // ── SVG line chart ──
   if(currentUser?.role==='owner'){
-    const chart=document.getElementById('dash-chart');
     const wr=thisWeekDates().map(d=>({d,rev:state.sales.filter(s=>s.date===d).reduce((a,s)=>a+(s.amount||0)*(s.qty||1),0)}));
-    const maxR=Math.max(...wr.map(w=>w.rev),1);
-    chart.innerHTML=wr.map(w=>'<div class="bar-wrap"><div class="bar-inner"><div class="bar" style="height:'+Math.max(4,(w.rev/maxR)*100)+'%" data-tip="R '+w.rev.toFixed(2)+'"></div></div><div class="bar-label">'+fmtDay(w.d)+'</div></div>').join('');
+    const maxR=Math.max(...wr.map(p=>p.rev),1);
+    const W=420,H=120,py=12;
+    const cx=(i)=>((i/(wr.length-1))*W).toFixed(1);
+    const cy=(rev)=>(H-py-((rev/maxR)*(H-py*2))).toFixed(1);
+    const linePts=wr.map((p,i)=>cx(i)+','+cy(p.rev)).join(' ');
+    const areaPath='M0,'+H+' '+wr.map((p,i)=>cx(i)+','+cy(p.rev)).join(' ')+' '+W+','+H+' Z';
+    const dots=wr.map((p,i)=>`<circle cx="${cx(i)}" cy="${cy(p.rev)}" r="3" fill="#9B6238" opacity="0.85"><title>R ${p.rev.toFixed(2)}</title></circle>`).join('');
+    const svg=document.getElementById('dash-chart-svg');
+    if(svg)svg.innerHTML=`
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#9B6238" stop-opacity="0.13"/>
+          <stop offset="100%" stop-color="#9B6238" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="${areaPath}" fill="url(#lg)"/>
+      <polyline points="${linePts}" fill="none" stroke="#9B6238" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+      ${dots}`;
+    const daysEl=document.getElementById('dash-chart-days');
+    if(daysEl)daysEl.innerHTML=wr.map(p=>`<span class="d-chart-day">${fmtDay(p.d)}</span>`).join('');
   }
+  // ── Top sellers ──
   const itemTotals={};
   state.sales.forEach(s=>{if(!itemTotals[s.item])itemTotals[s.item]={rev:0,qty:0};itemTotals[s.item].rev+=(s.amount||0)*(s.qty||1);itemTotals[s.item].qty+=(s.qty||1);});
-  const top=Object.entries(itemTotals).sort((a,b)=>b[1].rev-a[1].rev).slice(0,5);
-  document.getElementById('dash-top-sellers').innerHTML=top.length?top.map(([name,d])=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);"><div><div style="font-weight:600;font-size:14px;">'+name+'</div><div style="font-size:12px;color:var(--text-muted);">'+d.qty+' sold</div></div><div class="mono" style="color:var(--sage);font-weight:600;">R '+d.rev.toFixed(2)+'</div></div>').join(''):'<div class="empty"><div class="icon">☕</div>Log sales to see top sellers</div>';
+  const top=Object.entries(itemTotals).sort((a,b)=>b[1].rev-a[1].rev).slice(0,6);
+  document.getElementById('dash-top-sellers').innerHTML=top.length
+    ?top.map(([name,d],i)=>`<div class="d-seller"><span class="d-seller-n">${String(i+1).padStart(2,'0')}</span><span class="d-seller-name">${name}</span><span class="d-seller-qty">${d.qty} sold</span><span class="d-seller-rev">R ${d.rev.toFixed(2)}</span></div>`).join('')
+    :'<div class="empty"><div class="icon" style="opacity:.35;">◈</div>No sales yet.</div>';
+  // ── Low stock ──
   const lowItems=state.inventory.filter(i=>stockStatus(i)[0]!=='ok');
-  document.getElementById('dash-alerts').innerHTML=lowItems.length?'<div class="table-wrap"><table><thead><tr><th>Item</th><th>Category</th><th>Stock</th><th>Reorder At</th><th>Status</th></tr></thead><tbody>'+lowItems.map(i=>{const[sk,sl]=stockStatus(i);return'<tr><td><strong>'+i.name+'</strong></td><td>'+i.cat+'</td><td class="mono">'+i.stock+' '+i.unit+'</td><td class="mono">'+i.reorder+' '+i.unit+'</td><td><span class="badge badge-'+sk+'">'+sl+'</span></td></tr>';}).join('')+'</tbody></table></div>':'<div class="empty"><div class="icon">✅</div>Everything is stocked up!</div>';
+  document.getElementById('dash-alerts').innerHTML=lowItems.length
+    ?'<div class="table-wrap"><table><thead><tr><th>Item</th><th>Category</th><th>Stock</th><th>Reorder At</th><th>Status</th></tr></thead><tbody>'+lowItems.map(i=>{const[sk,sl]=stockStatus(i);return'<tr><td>'+i.name+'</td><td>'+i.cat+'</td><td class="mono">'+i.stock+' '+i.unit+'</td><td class="mono">'+i.reorder+' '+i.unit+'</td><td><span class="badge badge-'+sk+'">'+sl+'</span></td></tr>';}).join('')+'</tbody></table></div>'
+    :'<div class="empty"><div class="icon" style="opacity:.35;">✓</div>All items stocked.</div>';
 }
 
 // ═══════════ IMPORT ═══════════
@@ -2495,7 +2618,9 @@ window.addEventListener('appinstalled',()=>{document.getElementById('install-ban
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 
 // ═══════════ INIT ═══════════
-document.getElementById('todayBadge').textContent=new Date().toLocaleDateString('en-ZA',{weekday:'short',day:'numeric',month:'short'});
+const _dateStr=new Date().toLocaleDateString('en-ZA',{weekday:'short',day:'numeric',month:'short'});
+document.getElementById('todayBadge').textContent=_dateStr;
+const _hd=document.getElementById('dash-hero-date');if(_hd)_hd.textContent=new Date().toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long'});
 document.getElementById('s-date').value=today();
 document.getElementById('pu-date').value=today();
 document.getElementById('ex-date').value=today();
